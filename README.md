@@ -1,0 +1,2 @@
+# study_opencv
+pythonとopencvを使った画像処理のお勉強
