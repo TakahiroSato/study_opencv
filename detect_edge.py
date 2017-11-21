@@ -17,3 +17,23 @@ def filter2d(src, kernel):
             
             
     return dst
+
+def  first_derivation(src):
+    gray = cv2.cvtColor(src, cv2.COLOR_RGB2GRAY)
+    
+    kernel = np.array([[0,0,0],
+                       [-1,0,1],
+                       [0,0,0]])
+    
+    #return filter2d(gray, kernel)
+    return cv2.filter2D(gray, cv2.CV_64F, kernel)
+
+
+def prewitt_filter(src):
+    gray = cv2.cvtColor(src, cv2.COLOR_RGB2GRAY)
+    
+    kernel = np.array([[-1,0,1],
+                       [-1,0,1],
+                       [-1,0,1]])
+    
+    return cv2.filter2D(gray, cv2.CV_64F, kernel)
