@@ -7,3 +7,7 @@ opencv v3.1.0
 
 
 conda install -c https://conda.anaconda.org/menpo opencv3
+
+
+参考
+https://algorithm.joho.info/programming/python/opencv-sample-code-py/
