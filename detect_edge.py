@@ -3,7 +3,12 @@
 import cv2
 import numpy as np
 
-def filter2d(src, kernel):
+ddepth = -1 #cv2.CV_64F
+
+def filter2d(src, kernel, ddepth=-1):
+    return cv2.filter2D(__cvt_gray(src), ddepth, kernel)
+    
+    '''
     m, n = kernel.shape
     
     d = int((m-1)/2)
@@ -15,25 +20,53 @@ def filter2d(src, kernel):
         for x in range(d, w-d):
             dst[y][x] = np.sum(src[y-d:y+d+1, x-d:x+d+1]*kernel)
             
-            
     return dst
+    '''
+
+def __cvt_gray(src):
+    return cv2.cvtColor(src, cv2.COLOR_RGB2GRAY)
 
 def  first_derivation(src):
-    gray = cv2.cvtColor(src, cv2.COLOR_RGB2GRAY)
+    kernel = np.array([[0, 0, 0],
+                       [-1,0, 1],
+                       [0, 0, 0]])
     
-    kernel = np.array([[0,0,0],
-                       [-1,0,1],
-                       [0,0,0]])
-    
-    #return filter2d(gray, kernel)
-    return cv2.filter2D(gray, cv2.CV_64F, kernel)
-
+    return cv2.filter2D(__cvt_gray(src), ddepth, kernel)
 
 def prewitt_filter(src):
-    gray = cv2.cvtColor(src, cv2.COLOR_RGB2GRAY)
+    kernel = np.array([[-1, 0, 1],
+                       [-1, 0, 1],
+                       [-1, 0, 1]])
     
-    kernel = np.array([[-1,0,1],
-                       [-1,0,1],
-                       [-1,0,1]])
+    return cv2.filter2D(__cvt_gray(src), ddepth, kernel)
+
+def sobel_filter(src):
+    kernel = np.array([[-1, 0, 1],
+                       [-2, 0, 2],
+                       [-1, 0, 1]])
     
-    return cv2.filter2D(gray, cv2.CV_64F, kernel)
+    return cv2.filter2D(__cvt_gray(src), ddepth, kernel)
+
+def laplacian_filter(src):
+    kernel = np.array([[1, 1, 1],
+                       [1,-8, 1],
+                       [1, 1, 1]])
+    
+    return cv2.filter2D(__cvt_gray(src), ddepth, kernel)
+
+def emboss_filter(src):
+    kernel = np.array([[-2,-1, 0],
+                       [-1, 1, 1],
+                       [-1, 1, 2]])
+    
+    offset = 128
+    return cv2.filter2D(__cvt_gray(src), ddepth, kernel, delta=offset)
+
+def canny_filter(src, low_thresh=100, high_thresh=200):
+    return cv2.Canny(__cvt_gray(src), low_thresh, high_thresh)
+
+
+
+
+
+
